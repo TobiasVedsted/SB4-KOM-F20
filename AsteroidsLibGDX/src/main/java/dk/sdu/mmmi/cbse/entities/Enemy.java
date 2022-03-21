@@ -18,9 +18,13 @@ public class Enemy extends SpaceObject {
     private Random random = new Random();
     private int behavior;
 
+    private float[] flamex;
+    private float[] flamey;
+
     private float maxSpeed;
     private float acceleration;
     private float deceleration;
+    private float acceleratingTimer;
 
     public Enemy() {
 
@@ -33,6 +37,8 @@ public class Enemy extends SpaceObject {
 
         shapex = new float[4];
         shapey = new float[4];
+        flamex = new float[3];
+        flamey = new float[3];
 
         radians = 3.1415f / 2;
         rotationSpeed = 3;
@@ -51,6 +57,17 @@ public class Enemy extends SpaceObject {
 
         shapex[3] = x + MathUtils.cos(radians + 4 * 3.1415f / 5) * 8;
         shapey[3] = y + MathUtils.sin(radians + 4 * 3.1415f / 5) * 8;
+    }
+
+    private void setFlame() {
+        flamex[0] = x + MathUtils.cos(radians - 5 * 3.1415f / 6) * 5;
+        flamey[0] = y + MathUtils.sin(radians - 5 * 3.1415f / 6) * 5;
+
+        flamex[1] = x + MathUtils.cos(radians - 3.1415f) * (6 + acceleratingTimer * 50);
+        flamey[1] = y + MathUtils.sin(radians - 3.1415f) * (6 + acceleratingTimer * 50);
+
+        flamex[2] = x + MathUtils.cos(radians + 5 * 3.1415f / 6) * 5;
+        flamey[2] = y + MathUtils.sin(radians + 5 * 3.1415f / 6) * 5;
     }
 
     public void update(float dt) {
@@ -75,17 +92,19 @@ public class Enemy extends SpaceObject {
         // set shape
         setShape();
 
-        // screen wrap
-        wrap();
-
         switch (behavior) {
             // accelerating
             case 1:
             case 2:
-
                 dx += MathUtils.cos(radians) * acceleration * dt;
                 dy += MathUtils.sin(radians) * acceleration * dt;
-
+                acceleratingTimer += dt;
+                if (acceleratingTimer > 0.1f) {
+                    acceleratingTimer = 0;
+                } else {
+                    acceleratingTimer = 0;
+                }
+                setFlame();
                 break;
 
             case 3:
@@ -102,6 +121,9 @@ public class Enemy extends SpaceObject {
             // Drift
         }
 
+        // screen wrap
+        wrap();
+
     }
 
     public void draw(ShapeRenderer sr) {
@@ -115,6 +137,14 @@ public class Enemy extends SpaceObject {
                 j = i++) {
 
             sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
+
+        }
+
+        for (int i = 0, j = flamex.length - 1;
+                i < flamex.length;
+                j = i++) {
+
+            sr.line(flamex[i], flamey[i], flamex[j], flamey[j]);
 
         }
 
