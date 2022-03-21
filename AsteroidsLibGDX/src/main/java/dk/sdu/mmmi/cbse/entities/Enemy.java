@@ -7,6 +7,7 @@ package dk.sdu.mmmi.cbse.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import dk.sdu.mmmi.cbse.main.Game;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -14,6 +15,9 @@ import java.util.Random;
  * @author Vedsted
  */
 public class Enemy extends SpaceObject {
+
+    private final int maxBullets = 4;
+    private ArrayList<Bullet> bullets;
 
     private Random random = new Random();
     private int behavior;
@@ -26,7 +30,9 @@ public class Enemy extends SpaceObject {
     private float deceleration;
     private float acceleratingTimer;
 
-    public Enemy() {
+    public Enemy(ArrayList<Bullet> bullets) {
+
+        this.bullets = bullets;
 
         x = Game.WIDTH / 2;
         y = Game.HEIGHT / 2;
@@ -72,7 +78,7 @@ public class Enemy extends SpaceObject {
 
     public void update(float dt) {
 
-        behavior = random.nextInt(5);
+        behavior = random.nextInt(6);
 
         // deceleration
         float vec = (float) Math.sqrt(dx * dx + dy * dy);
@@ -115,6 +121,14 @@ public class Enemy extends SpaceObject {
             case 4:
                 // Turn right
                 radians -= rotationSpeed * dt;
+                break;
+
+            case 5:
+                //SHooting
+                if (bullets.size() == maxBullets) {
+                    return;
+                }
+                bullets.add(new Bullet(x, y, radians));
                 break;
 
             default:

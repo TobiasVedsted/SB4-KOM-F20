@@ -15,8 +15,6 @@ public class Player extends SpaceObject {
     private boolean right;
     private boolean up;
 
-    private boolean space;
-
     private float[] flamex;
     private float[] flamey;
 

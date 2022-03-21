@@ -15,7 +15,8 @@ public class PlayState extends GameState {
 
     private Player player;
     private Enemy enemy;
-    private ArrayList<Bullet> bullets;
+    private ArrayList<Bullet> bulletsPlayer;
+    private ArrayList<Bullet> bulletsEnemy;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -26,10 +27,11 @@ public class PlayState extends GameState {
         srPlayer = new ShapeRenderer();
         srEnemy = new ShapeRenderer();
 
-        bullets = new ArrayList<Bullet>();
+        bulletsPlayer = new ArrayList<Bullet>();
+        bulletsEnemy = new ArrayList<Bullet>();
         
-        player = new Player(bullets);
-        enemy = new Enemy();
+        player = new Player(bulletsPlayer);
+        enemy = new Enemy(bulletsEnemy);
 
     }
 
@@ -40,10 +42,18 @@ public class PlayState extends GameState {
         player.update(dt);
         enemy.update(dt);
         
-        for(int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).update(dt);
-            if(bullets.get(i).shouldRemove()) {
-                bullets.remove(i);
+        for(int i = 0; i < bulletsPlayer.size(); i++) {
+            bulletsPlayer.get(i).update(dt);
+            if(bulletsPlayer.get(i).shouldRemove()) {
+                bulletsPlayer.remove(i);
+                i--;
+            }
+        }
+        
+        for(int i = 0; i < bulletsEnemy.size(); i++) {
+            bulletsEnemy.get(i).update(dt);
+            if(bulletsEnemy.get(i).shouldRemove()) {
+                bulletsEnemy.remove(i);
                 i--;
             }
         }
@@ -54,8 +64,12 @@ public class PlayState extends GameState {
         player.draw(srPlayer);
         enemy.draw(srEnemy);
         
-        for(int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).draw(srPlayer);
+        for(int i = 0; i < bulletsPlayer.size(); i++) {
+            bulletsPlayer.get(i).draw(srPlayer);
+        }
+        
+        for(int i = 0; i < bulletsEnemy.size(); i++) {
+            bulletsEnemy.get(i).draw(srEnemy);
         }
     }
 
