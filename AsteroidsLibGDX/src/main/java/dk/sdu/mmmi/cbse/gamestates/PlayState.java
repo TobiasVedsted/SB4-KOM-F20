@@ -10,28 +10,27 @@ import java.util.ArrayList;
 
 public class PlayState extends GameState {
 
-    private ShapeRenderer srPlayer;
-    private ShapeRenderer srEnemy;
+    private ShapeRenderer sr;
 
     private Player player;
     private Enemy enemy;
     private ArrayList<Bullet> bulletsPlayer;
     private ArrayList<Bullet> bulletsEnemy;
-
+    //private ArrayList<Asteroid> asteroida;
+    
     public PlayState(GameStateManager gsm) {
         super(gsm);
     }
 
     public void init() {
 
-        srPlayer = new ShapeRenderer();
-        srEnemy = new ShapeRenderer();
+        sr = new ShapeRenderer();
 
         bulletsPlayer = new ArrayList<Bullet>();
         bulletsEnemy = new ArrayList<Bullet>();
         
         player = new Player(bulletsPlayer);
-        enemy = new Enemy(bulletsEnemy);
+        enemy = new Enemy(bulletsPlayer);
 
     }
 
@@ -61,15 +60,15 @@ public class PlayState extends GameState {
     }
 
     public void draw() {
-        player.draw(srPlayer);
-        enemy.draw(srEnemy);
+        player.draw(sr);
+        enemy.draw(sr);
         
         for(int i = 0; i < bulletsPlayer.size(); i++) {
-            bulletsPlayer.get(i).draw(srPlayer);
+            bulletsPlayer.get(i).draw(sr);
         }
         
         for(int i = 0; i < bulletsEnemy.size(); i++) {
-            bulletsEnemy.get(i).draw(srEnemy);
+            bulletsEnemy.get(i).draw(sr);
         }
     }
 

@@ -34,8 +34,8 @@ public class Enemy extends SpaceObject {
 
         this.bullets = bullets;
 
-        x = Game.WIDTH / 2;
-        y = Game.HEIGHT / 2;
+        x = Game.WIDTH;
+        y = Game.HEIGHT;
 
         maxSpeed = 300;
         acceleration = 200;
