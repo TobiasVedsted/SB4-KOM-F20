@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.gamestates;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import dk.sdu.mmmi.cbse.entities.Asteroid;
 import dk.sdu.mmmi.cbse.entities.Bullet;
 import dk.sdu.mmmi.cbse.entities.Enemy;
 import dk.sdu.mmmi.cbse.entities.Player;
@@ -16,7 +17,7 @@ public class PlayState extends GameState {
     private Enemy enemy;
     private ArrayList<Bullet> bulletsPlayer;
     private ArrayList<Bullet> bulletsEnemy;
-    //private ArrayList<Asteroid> asteroida;
+    private ArrayList<Asteroid> asteroids;
     
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -30,7 +31,10 @@ public class PlayState extends GameState {
         bulletsEnemy = new ArrayList<Bullet>();
         
         player = new Player(bulletsPlayer);
-        enemy = new Enemy(bulletsPlayer);
+        enemy = new Enemy(bulletsEnemy);
+        asteroids = new ArrayList<Asteroid>();
+        asteroids.add(new Asteroid(100, 100, Asteroid.medium));
+        
 
     }
 
@@ -56,6 +60,14 @@ public class PlayState extends GameState {
                 i--;
             }
         }
+        
+        for(int i = 0; i < asteroids.size(); i++) {
+            asteroids.get(i).update(dt);
+            if(asteroids.get(i).shouldRemove()) {
+                asteroids.remove(i);
+                i--;
+            }
+        }
 
     }
 
@@ -69,6 +81,10 @@ public class PlayState extends GameState {
         
         for(int i = 0; i < bulletsEnemy.size(); i++) {
             bulletsEnemy.get(i).draw(sr);
+        }
+        
+        for(int i = 0; i < asteroids.size(); i++) {
+            asteroids.get(i).draw(sr);
         }
     }
 
