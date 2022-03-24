@@ -19,6 +19,10 @@ public class PlayState extends GameState {
     private ArrayList<Bullet> bulletsEnemy;
     private ArrayList<Asteroid> asteroids;
     
+    private int totalAsteroids; 
+    private int numAsteroidsLeft;
+    
+            
     public PlayState(GameStateManager gsm) {
         super(gsm);
     }
@@ -30,13 +34,31 @@ public class PlayState extends GameState {
         bulletsPlayer = new ArrayList<Bullet>();
         bulletsEnemy = new ArrayList<Bullet>();
         
-        player = new Player(bulletsPlayer);
-        enemy = new Enemy(bulletsEnemy);
+        player = new Player(bulletsPlayer, 3);
+        enemy = new Enemy(bulletsEnemy, 3);
         asteroids = new ArrayList<Asteroid>();
-        asteroids.add(new Asteroid(100, 100, Asteroid.medium));
+        asteroids.add(new Asteroid(100, 100, Asteroid.small));
+        asteroids.add(new Asteroid(50, 100, Asteroid.medium));
+        asteroids.add(new Asteroid(100, 50, Asteroid.large));
         
+        totalAsteroids = asteroids.size();
+        numAsteroidsLeft = totalAsteroids;
+       
 
     }
+    
+    private void splitAsteroids(Asteroid a) {
+        numAsteroidsLeft--;
+        if(a.getType() == Asteroid.large) {
+            asteroids.add(new Asteroid(a.getX(), a.getY(), Asteroid.medium));
+            asteroids.add(new Asteroid(a.getX(), a.getY(), Asteroid.medium));
+        }
+        if(a.getType() == Asteroid.medium) {
+            asteroids.add(new Asteroid(a.getX(), a.getY(), Asteroid.small));
+            asteroids.add(new Asteroid(a.getX(), a.getY(), Asteroid.small));
+        }
+    }
+
 
     public void update(float dt) {
 
@@ -68,9 +90,92 @@ public class PlayState extends GameState {
                 i--;
             }
         }
+        
+        // Check collision
+        checkCollisions();
 
     }
-
+    
+    private void checkCollisions() {
+        
+        // Bullet - Asteroid collision
+        for (int i = 0; i < bulletsPlayer.size(); i++) {
+            Bullet b = bulletsPlayer.get(i);
+            for (int j = 0; j < asteroids.size(); j++) {
+                Asteroid a = asteroids.get(j);
+                // if asteroid contains bullet, bullet has a very precise koordinat
+                if(a.contains(b.getX(), b.getY())) {
+                    bulletsPlayer.remove(i);
+                    i--;
+                    asteroids.remove(j);
+                    j--;
+                    splitAsteroids(a);
+                    break;
+                }
+            }
+        }
+        
+        for (int i = 0; i < bulletsEnemy.size(); i++) {
+            Bullet b = bulletsEnemy.get(i);
+            for (int j = 0; j < asteroids.size(); j++) {
+                Asteroid a = asteroids.get(j);
+                // if asteroid contains bullet, bullet has a very precise koordinat
+                if(a.contains(b.getX(), b.getY())) {
+                    bulletsEnemy.remove(i);
+                    i--;
+                    asteroids.remove(j);
+                    j--;
+                    splitAsteroids(a);
+                    break;
+                }
+            }
+        }
+        
+        // Player - Asteroid collision
+        for (int i = 0; i < asteroids.size(); i++) {
+            Asteroid a = asteroids.get(i);
+            if(a.intersects(player)) {
+                player.hit();
+                if(player.getHealth() == 0) {
+                    player.dead();
+                }
+                asteroids.remove(i);
+                i--;
+                splitAsteroids(a);
+                break;
+            }
+        }
+        
+        // Bullet - Enemy collision
+        for (int i = 0; i < bulletsPlayer.size(); i++) {
+            Bullet b = bulletsPlayer.get(i);
+            if(enemy.contains(b.getX(), b.getY())) {
+                enemy.hit();
+                if(enemy.getHealth() == 0) {
+                    enemy.dead();
+                }
+                bulletsPlayer.remove(i);
+                i--;
+                break;
+            }
+        }
+        
+        // Bullet - Player collision
+        for (int i = 0; i < bulletsEnemy.size(); i++) {
+            Bullet b = bulletsEnemy.get(i);
+            if(player.contains(b.getX(), b.getY())) {
+                player.hit();
+                if(player.getHealth() == 0) {
+                    player.dead();
+                }
+                bulletsEnemy.remove(i);
+                i--;
+                break;
+            }
+        }
+        
+    }
+    
     public void draw() {
         player.draw(sr);
         enemy.draw(sr);

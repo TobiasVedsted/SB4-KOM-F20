@@ -7,6 +7,8 @@ package dk.sdu.mmmi.cbse.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import dk.sdu.mmmi.cbse.main.Game;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,15 +31,24 @@ public class Enemy extends SpaceObject {
     private float acceleration;
     private float deceleration;
     private float acceleratingTimer;
+    
+    private int deadTimer;
+    private int deadTime;
+    private Line2D.Float[] hitLines;
+    private Point2D.Float[] hitLinesVector;
+    private int health;
+    private int orgHealth;
 
-    public Enemy(ArrayList<Bullet> bullets) {
+    public Enemy(ArrayList<Bullet> bullets, int health) {
 
         this.bullets = bullets;
+        this.health = health;
+        orgHealth = health;
 
-        x = Game.WIDTH;
-        y = Game.HEIGHT;
+        x = Game.WIDTH / 1.5f;
+        y = Game.HEIGHT / 1.5f;
 
-        maxSpeed = 300;
+        maxSpeed = 200;
         acceleration = 200;
         deceleration = 10;
 
@@ -48,6 +59,9 @@ public class Enemy extends SpaceObject {
 
         radians = 3.1415f / 2;
         rotationSpeed = 3;
+        
+        deadTimer = 0;
+        deadTime = 2;
 
     }
 
@@ -74,6 +88,20 @@ public class Enemy extends SpaceObject {
 
         flamex[2] = x + MathUtils.cos(radians + 5 * 3.1415f / 6) * 5;
         flamey[2] = y + MathUtils.sin(radians + 5 * 3.1415f / 6) * 5;
+    }
+    
+    public void hit() {
+        health--;
+        System.out.println("E" + health);
+    }
+    
+    public void dead() {
+        health = orgHealth;
+        System.out.println("E" + health);
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     public void update(float dt) {

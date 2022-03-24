@@ -4,13 +4,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import dk.sdu.mmmi.cbse.main.Game;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Player extends SpaceObject {
 
     private final int maxBullets = 4;
     private ArrayList<Bullet> bullets;
-    
+
     private boolean left;
     private boolean right;
     private boolean up;
@@ -23,10 +25,19 @@ public class Player extends SpaceObject {
     private float deceleration;
     private float acceleratingTimer;
 
-    public Player(ArrayList<Bullet> bullets) {
+    private int deadTimer;
+    private int deadTime;
+    private Line2D.Float[] hitLines;
+    private Point2D.Float[] hitLinesVector;
+    private int health;
+    private int orgHealth;
+
+    public Player(ArrayList<Bullet> bullets, int health) {
 
         this.bullets = bullets;
-        
+        this.health = health;
+        orgHealth = health;
+
         x = Game.WIDTH / 2;
         y = Game.HEIGHT / 2;
 
@@ -41,6 +52,9 @@ public class Player extends SpaceObject {
 
         radians = 3.1415f / 2;
         rotationSpeed = 3;
+        
+        deadTimer = 0;
+        deadTime = 2;
 
     }
 
@@ -80,14 +94,29 @@ public class Player extends SpaceObject {
     public void setUp(boolean b) {
         up = b;
     }
-    
+
     public void shoot() {
-        if(bullets.size() == maxBullets) {
+        if (bullets.size() == maxBullets) {
             return;
         }
         bullets.add(new Bullet(x, y, radians));
-    } 
+    }
 
+    public void hit() {
+        health--;
+        System.out.println("P" + health);
+    }
+
+    public void dead() {
+        
+        health = orgHealth;
+        System.out.println("P" + health);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+    
     public void update(float dt) {
 
         // turning
@@ -165,6 +194,5 @@ public class Player extends SpaceObject {
         sr.end();
 
     }
-
 
 }
