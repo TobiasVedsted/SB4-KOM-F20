@@ -65,7 +65,18 @@ public class PlayState extends GameState {
         handleInput();
 
         player.update(dt);
+        if(player.isDeadDead()) {
+            System.out.println("im dead");
+            player.reset();
+            return;
+        }
+        
         enemy.update(dt);
+        if(enemy.isDeadDead()) {
+            System.out.println("enemy dead");
+            enemy.reset();
+            return;
+        }
         
         for(int i = 0; i < bulletsPlayer.size(); i++) {
             bulletsPlayer.get(i).update(dt);
