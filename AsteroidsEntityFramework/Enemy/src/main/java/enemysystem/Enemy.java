@@ -4,10 +4,12 @@
  */
 package enemysystem;
 
+import dk.sdu.mmmi.cbse.common.data.Entity;
+
 /**
  *
  * @author Vedsted
  */
-public class Enemy {
+public class Enemy extends Entity{
     
 }

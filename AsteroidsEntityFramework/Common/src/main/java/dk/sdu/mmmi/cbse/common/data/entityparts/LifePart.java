@@ -15,12 +15,12 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 public class LifePart implements EntityPart {
 
     private int life;
-    private boolean isHit = false;
-    private float expiration;
+    private boolean isDead = false;
+    private float respawnTimer;
 
     public LifePart(int life, float expiration) {
         this.life = life;
-        this.expiration = expiration;
+        this.respawnTimer = expiration;
     }
 
     public int getLife() {
@@ -31,24 +31,24 @@ public class LifePart implements EntityPart {
         this.life = life;
     }
 
-    public boolean isIsHit() {
-        return isHit;
+    public boolean getIsDead() {
+        return isDead;
     }
 
-    public void setIsHit(boolean isHit) {
-        this.isHit = isHit;
+    public void setIsDead(boolean isDead) {
+        this.isDead = isDead;
     }
 
-    public float getExpiration() {
-        return expiration;
+    public float getRespawnTimer() {
+        return respawnTimer;
     }
 
-    public void setExpiration(float expiration) {
-        this.expiration = expiration;
+    public void setRespawnTimer(float expiration) {
+        this.respawnTimer = expiration;
     }  
     
-    public void reduceExpiration(float delta){
-        this.expiration -= delta;
+    public void reduceRespawnTimer(float delta){
+        this.respawnTimer -= delta;
     }
     
     @Override
