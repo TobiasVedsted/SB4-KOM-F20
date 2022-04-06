@@ -3,6 +3,7 @@ package dk.sdu.mmmi.cbse.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.main.Game;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -25,12 +26,14 @@ public class Player extends SpaceObject {
     private float deceleration;
     private float acceleratingTimer;
 
-    private int deadTimer;
-    private int deadTime;
+    private float deadTimer;
+    private float deadTime;
     private Line2D.Float[] hitLines;
     private Point2D.Float[] hitLinesVector;
     private int health;
     private int orgHealth;
+    private boolean dead;
+    private boolean deadDead;
 
     public Player(ArrayList<Bullet> bullets, int health) {
 
@@ -52,7 +55,8 @@ public class Player extends SpaceObject {
 
         radians = 3.1415f / 2;
         rotationSpeed = 3;
-        
+
+        dead = false;
         deadTimer = 0;
         deadTime = 2;
 
@@ -108,16 +112,83 @@ public class Player extends SpaceObject {
     }
 
     public void dead() {
+
+        if (dead) {
+            return;
+        }
+
+        dead = true;
+        dx = dy = 0;
+        left = right = up = false;
+
+        hitLines = new Line2D.Float[4];
+        for (int i = 0, j = hitLines.length - 1; i < hitLines.length; j = i++) {
+            hitLines[i] = new Line2D.Float(shapex[i], shapey[i], shapex[j], shapey[j]);
+        }
+
+        hitLinesVector = new Point2D.Float[4];
+        hitLinesVector[0] = new Point2D.Float(
+                MathUtils.cos(radians + 1.5f),
+                MathUtils.sin(radians + 1.5f)
+        );
+        hitLinesVector[1] = new Point2D.Float(
+                MathUtils.cos(radians - 1.5f),
+                MathUtils.sin(radians - 1.5f)
+        );
+        hitLinesVector[2] = new Point2D.Float(
+                MathUtils.cos(radians + 2.8f),
+                MathUtils.sin(radians + 2.8f)
+        );
+        hitLinesVector[3] = new Point2D.Float(
+                MathUtils.cos(radians - 2.8f),
+                MathUtils.sin(radians - 2.8f)
+        );
+
         
-        health = orgHealth;
-        System.out.println("P" + health);
     }
 
     public int getHealth() {
         return health;
     }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public boolean isDeadDead() {
+        return deadDead;
+    }
     
+    
+    
+    public void reset() {
+        x = Game.WIDTH / 2;
+        y = Game.HEIGHT / 2;
+        setShape();
+        health = orgHealth;
+        System.out.println("P" + health);
+        dead = deadDead = false;
+    }
+
     public void update(float dt) {
+
+        if (dead) {
+            deadTimer += dt;
+            if (deadTimer > deadTime){
+                System.out.println("P deaddead");
+                deadDead = true;
+                deadTimer = 0;
+            }
+            for (int i = 0; i < hitLines.length; i++) {
+                hitLines[i].setLine(
+                        hitLines[i].x1 + hitLinesVector[i].x * 10 * dt,
+                        hitLines[i].y1 + hitLinesVector[i].y * 10 * dt,
+                        hitLines[i].x2 + hitLinesVector[i].x * 10 * dt,
+                        hitLines[i].y2 + hitLinesVector[i].y * 10 * dt
+                );
+            }
+            return;
+        }
 
         // turning
         if (left) {
@@ -139,7 +210,8 @@ public class Player extends SpaceObject {
         }
         // deceleration
         float vec = (float) Math.sqrt(dx * dx + dy * dy);
-        if (vec > 0) {
+        if (vec
+                > 0) {
             dx -= (dx / vec) * deceleration * dt;
             dy -= (dy / vec) * deceleration * dt;
         }
@@ -170,6 +242,19 @@ public class Player extends SpaceObject {
         sr.setColor(1, 1, 1, 1);
 
         sr.begin(ShapeType.Line);
+
+        if (dead) {
+            for (int i = 0; i < hitLines.length; i++) {
+                sr.line(
+                        hitLines[i].x1,
+                        hitLines[i].y1,
+                        hitLines[i].x2,
+                        hitLines[i].y2
+                );
+            }
+            sr.end();
+            return;
+        }
 
         //draw ship
         for (int i = 0, j = shapex.length - 1;

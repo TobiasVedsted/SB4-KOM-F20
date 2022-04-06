@@ -51,7 +51,7 @@ public class CollisionDetectorTest {
     /**
      * Test of Collides method, of class CollisionDetector.
      */
-    public void testCollides() {
+    /*public void testCollides() {
         System.out.println("Collides");
         Entity entity = null;
         Entity entity2 = null;
@@ -61,6 +61,6 @@ public class CollisionDetectorTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
 }
