@@ -41,12 +41,12 @@ public class CollisionDetectorTest {
     /**
      * Test of process method, of class CollisionDetector.
      */
-    @Test
+    /*@Test
     public void testProcess() {
 
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of Collides method, of class CollisionDetector.

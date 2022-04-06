@@ -35,7 +35,7 @@ public class ApplicationTest extends NbTestCase {
         super(n);
     }
 
-    public void testApplication() throws InterruptedException, IOException {
+    /*public void testApplication() throws InterruptedException, IOException {
 
         // SETUP
         List<IEntityProcessingService> processors = new CopyOnWriteArrayList<>();
@@ -67,7 +67,7 @@ public class ApplicationTest extends NbTestCase {
         assertEquals("No processors", 3, processors.size());
 
         copy(get(ADD_ENEMY_UPDATES_FILE), get(UPDATES_FILE), REPLACE_EXISTING);
-    }
+    }*/
 
     private void waitForUpdate(List<IEntityProcessingService> processors, List<IGamePluginService> plugins, long millis) throws InterruptedException {
         // Needs time for silentUpdater to install all modules
