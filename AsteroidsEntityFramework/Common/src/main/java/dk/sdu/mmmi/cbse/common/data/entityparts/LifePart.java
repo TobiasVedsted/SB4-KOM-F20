@@ -18,9 +18,9 @@ public class LifePart implements EntityPart {
     private boolean isDead = false;
     private float respawnTimer;
 
-    public LifePart(int life, float expiration) {
+    public LifePart(int life, float respawnTimer) {
         this.life = life;
-        this.respawnTimer = expiration;
+        this.respawnTimer = respawnTimer;
     }
 
     public int getLife() {
@@ -43,12 +43,17 @@ public class LifePart implements EntityPart {
         return respawnTimer;
     }
 
-    public void setRespawnTimer(float expiration) {
-        this.respawnTimer = expiration;
+    public void setRespawnTimer(float respawnTimer) {
+        this.respawnTimer = respawnTimer;
     }  
     
     public void reduceRespawnTimer(float delta){
         this.respawnTimer -= delta;
+    }
+    
+    public void takeDamage(int damage){
+        life--;
+        System.out.println("1 damage taken");
     }
     
     @Override

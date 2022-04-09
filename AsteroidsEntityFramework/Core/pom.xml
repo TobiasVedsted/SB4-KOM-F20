@@ -79,6 +79,11 @@
             <artifactId>Enemy</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>dk.sdu.mmmi.cbse.asteroid</groupId>
+            <artifactId>Asteroid</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -6,8 +6,8 @@
         <artifactId>AsteroidsEntityFramework</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>dk.sdu.mmmi.cbse.asteroid</groupId>
-    <artifactId>Asteroid</artifactId>
+    <groupId>dk.sdu.mmmi.cbse.bullet</groupId>
+    <artifactId>Bullet</artifactId>
     <dependencies>
         <dependency>
             <groupId>dk.sdu.mmmi.cbse</groupId>
@@ -16,6 +16,6 @@
         </dependency>
     </dependencies>
     <properties>
-        <exec.mainClass>dk.sdu.mmmi.cbse.asteroid.Asteroid</exec.mainClass>
+        <exec.mainClass>dk.sdu.mmmi.cbse.bullet.Bullet</exec.mainClass>
     </properties>
 </project>

@@ -3,16 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
  */
 
-package dk.sdu.mmmi.cbse.asteroid;
+package dk.sdu.mmmi.cbse.bullet;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
-
-
 
 /**
  *
  * @author Vedsted
  */
-public class Asteroid extends Entity{
-    
+public class Bullet extends Entity{
 }
