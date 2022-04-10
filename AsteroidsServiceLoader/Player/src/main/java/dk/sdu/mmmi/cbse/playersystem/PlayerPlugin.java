@@ -34,7 +34,7 @@ public class PlayerPlugin implements IGamePluginService {
         float radians = 3.1415f / 2;
         
         Entity playerShip = new Player();
-        playerShip.setRadius(3);
+        //playerShip.setRadius(3);
         
         playerShip.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
         playerShip.add(new PositionPart(x, y, radians));
