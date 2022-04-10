@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dk.sdu.mmmi.cbse</groupId>
-    <artifactId>NBLab-parent</artifactId>
+    <artifactId>NBLab1-parent</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>NBLab-parent</name>
+    <name>NBLab1-parent</name>
 
     <repositories>
         <!--
@@ -60,6 +60,11 @@
 
     <modules>
         <module>application</module>
+        <module>GameCore</module>
+        <module>CommonLibrary</module>
+        <module>Player</module>
+        <module>Enemy</module>
+        <module>Asteroid</module>
     </modules>
 
     <properties>

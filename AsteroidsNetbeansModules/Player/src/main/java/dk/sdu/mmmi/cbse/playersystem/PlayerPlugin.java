@@ -22,6 +22,7 @@ public class PlayerPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
 
+        System.out.println("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         // Add entities to the world
         player = createPlayerShip(gameData);
         world.addEntity(player);
